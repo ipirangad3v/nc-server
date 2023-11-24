@@ -16,12 +16,6 @@ data class BlogsResponse(
                 message,
             )
 
-        fun notFound(message: String) =
-            BlogsResponse(
-                State.NOT_FOUND,
-                message,
-            )
-
         fun success(
             pagination: Pagination?,
             blogs: List<BlogDomainModel>,
@@ -37,10 +31,10 @@ data class BlogsResponse(
 
 @Serializable
 data class Pagination(
-    val total_count: Int,
-    val current_page: Int,
-    val total_pages: Int,
-    val _links: Links,
+    val totalCount: Int,
+    val currentPage: Int,
+    val totalPages: Int,
+    val links: Links,
 )
 
 @Serializable

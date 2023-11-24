@@ -22,13 +22,12 @@ import io.ktor.server.netty.Netty
 import org.koin.core.annotation.KoinReflectAPI
 import org.koin.ktor.ext.inject
 
-fun main(args: Array<String>) {
+fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 
-@OptIn(KoinReflectAPI::class)
-@Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
+@OptIn(KoinReflectAPI::class) // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
     val databaseProvider by inject<DatabaseProviderContract>()
     val userDao by inject<UserDao>()

@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 data class AuthResponse(
     override val status: State,
     override val message: String,
-    val access_token: String? = null,
-    val refresh_token: String? = null,
+    val accessToken: String? = null,
+    val refreshToken: String? = null,
 ) : Response {
     companion object {
         fun failed(message: String) =
