@@ -1,0 +1,1 @@
+web: build/install/nc-api/bin/nc-api
