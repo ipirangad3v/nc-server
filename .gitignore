@@ -34,3 +34,5 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/ktor-firebase-auth-firebase-adminsdk.json
+/.env
