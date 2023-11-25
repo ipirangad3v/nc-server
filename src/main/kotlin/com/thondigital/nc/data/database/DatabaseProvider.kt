@@ -79,7 +79,7 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
     // For heroku deployement
     private fun hikariHeroku(): HikariDataSource {
         HikariConfig().run {
-            driverClassName = System.getenv("JDBC_DRIVER")
+            driverClassName = "com.mysql.jdbc.Driver"
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
 
