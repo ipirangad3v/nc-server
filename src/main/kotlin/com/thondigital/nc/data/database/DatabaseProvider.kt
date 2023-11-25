@@ -83,13 +83,8 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
 
-
-            val uri = URI(System.getenv("DATABASE_URL"))
-            val username = uri.userInfo.split(":").toTypedArray()[0]
-            val password = uri.userInfo.split(":").toTypedArray()[1]
-
             jdbcUrl =
-                "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path + "?sslmode=require" + "&user=$username&password=$password"
+                System.getenv("JDBC_DATABASE_URL")
 
             validate()
 
