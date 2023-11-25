@@ -78,10 +78,12 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
     // For heroku deployement
     private fun hikariHeroku(): HikariDataSource {
-        val config = HikariConfig()
-        config.driverClassName = System.getenv("JDBC_DRIVER")
-        config.isAutoCommit = false
-        config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+        val config = HikariConfig().apply {
+            driverClassName = System.getenv("JDBC_DRIVER")
+            isAutoCommit = false
+            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+        }
+
 
         val uri = URI(System.getenv("DATABASE_URL"))
         val username = uri.userInfo.split(":").toTypedArray()[0]
