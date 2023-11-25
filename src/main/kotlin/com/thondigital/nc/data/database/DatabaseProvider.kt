@@ -7,6 +7,7 @@ import com.thondigital.nc.data.database.table.Tokens
 import com.thondigital.nc.data.database.table.Users
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newFixedThreadPoolContext
 import org.jetbrains.exposed.sql.Database
@@ -33,7 +34,26 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
         }
     }
 
-/*    private fun hikari(): HikariDataSource {
+    private fun hikari(): HikariDataSource {
+        val dotenv = dotenv()
+        val apiKey = dotenv["LOCAL_DEPLOYMENT"]
+
+        return when (apiKey) {
+            "true" -> {
+                hikariLocal()
+            }
+
+            "false" -> {
+                hikariHeroku()
+            }
+
+            else -> {
+                throw Exception("LOCAL_DEPLOYMENT must be set to true or false")
+            }
+        }
+    }
+
+    private fun hikariLocal(): HikariDataSource {
         HikariConfig().run {
             driverClassName = driverClass
             jdbcUrl = "jdbc:postgresql://${host}:${port}/${dbname}"
@@ -51,13 +71,13 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
         const val driverClass = "org.postgresql.Driver"
         const val host = "localhost"
         const val port = 3500
-        const val dbname = "blogfy"
+        const val dbname = "nc_server"
         const val user = "postgres"
         const val dbpassword = "root"
-    }*/
+    }
 
     // For heroku deployement
-    private fun hikari(): HikariDataSource {
+    private fun hikariHeroku(): HikariDataSource {
         val config = HikariConfig()
         config.driverClassName = System.getenv("JDBC_DRIVER")
         config.isAutoCommit = false
