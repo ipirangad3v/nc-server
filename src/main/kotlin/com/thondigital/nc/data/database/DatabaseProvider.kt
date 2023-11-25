@@ -89,7 +89,7 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
         HikariConfig().run {
             driverClassName = "org.postgresql.Driver"
-            jdbcUrl = "jdbc:mysql://${databaseHost}:${dbPort}/${dbName}"
+            jdbcUrl = "jdbc:postgresql://${databaseHost}:${dbPort}/${dbName}"
             username = dbUser
             password = dbPassword
             isAutoCommit = false
