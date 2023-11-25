@@ -84,7 +84,7 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
 
 
-            val uri = URI(System.getenv("DATABASE_URL"))
+            val uri = URI(System.getenv("JDBC_DATABASE_URL"))
             val username = uri.userInfo.split(":").toTypedArray()[0]
             val password = uri.userInfo.split(":").toTypedArray()[1]
 
