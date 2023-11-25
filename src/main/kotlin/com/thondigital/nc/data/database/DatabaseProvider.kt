@@ -78,23 +78,23 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
     // For heroku deployement
     private fun hikariHeroku(): HikariDataSource {
-        val config = HikariConfig().apply {
+        HikariConfig().run {
             driverClassName = System.getenv("JDBC_DRIVER")
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+
+
+            val uri = URI(System.getenv("DATABASE_URL"))
+            val username = uri.userInfo.split(":").toTypedArray()[0]
+            val password = uri.userInfo.split(":").toTypedArray()[1]
+
+            jdbcUrl =
+                "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path + "?sslmode=require" + "&user=$username&password=$password"
+
+            validate()
+
+            return HikariDataSource(this)
         }
-
-
-        val uri = URI(System.getenv("DATABASE_URL"))
-        val username = uri.userInfo.split(":").toTypedArray()[0]
-        val password = uri.userInfo.split(":").toTypedArray()[1]
-
-        config.jdbcUrl =
-            "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path + "?sslmode=require" + "&user=$username&password=$password"
-
-        config.validate()
-
-        return HikariDataSource(config)
     }
 }
 
