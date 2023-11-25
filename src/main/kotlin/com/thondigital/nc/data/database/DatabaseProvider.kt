@@ -16,6 +16,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.KoinComponent
 import java.net.URI
 import kotlin.coroutines.CoroutineContext
+import org.slf4j.Logger
 
 @OptIn(DelicateCoroutinesApi::class)
 class DatabaseProvider : DatabaseProviderContract, KoinComponent {
@@ -78,16 +79,22 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
     // For heroku deployement
     private fun hikariHeroku(): HikariDataSource {
+
+        val dotenv = dotenv()
+        val databaseHost = dotenv["HOST_URL"]
+        val dbPort = dotenv["DB_PORT"]
+        val dbName = dotenv["DB_NAME"]
+        val dbPassword = dotenv["DB_PASSWORD"]
+        val dbUser = dotenv["DB_USER"]
+
         HikariConfig().run {
-            driverClassName = "com.mysql.jdbc.Driver"
+            driverClassName = "org.postgresql.Driver"
+            jdbcUrl = "jdbc:mysql://${databaseHost}:${dbPort}/${dbName}"
+            username = dbUser
+            password = dbPassword
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-
-            jdbcUrl =
-                System.getenv("JDBC_DATABASE_URL")
-
             validate()
-
             return HikariDataSource(this)
         }
     }
