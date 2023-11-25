@@ -1,1 +1,1 @@
-web: .build/install/nc-server/bin/nc-server
+web: build/install/nc-server/bin/nc-server
