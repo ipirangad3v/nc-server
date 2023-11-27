@@ -14,9 +14,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.KoinComponent
-import java.net.URI
 import kotlin.coroutines.CoroutineContext
-import org.slf4j.Logger
 
 @OptIn(DelicateCoroutinesApi::class)
 class DatabaseProvider : DatabaseProviderContract, KoinComponent {
@@ -57,7 +55,7 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
     private fun hikariLocal(): HikariDataSource {
         HikariConfig().run {
             driverClassName = driverClass
-            jdbcUrl = "jdbc:postgresql://${host}:${port}/${dbname}"
+            jdbcUrl = "jdbc:postgresql://$host:$port/$dbname"
             username = user
             password = dbpassword
             isAutoCommit = false
@@ -79,7 +77,6 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
     // For heroku deployement
     private fun hikariHeroku(): HikariDataSource {
-
         val dotenv = dotenv()
         val databaseHost = dotenv["HOST_URL"]
         val dbPort = dotenv["DB_PORT"]
@@ -89,7 +86,7 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
         HikariConfig().run {
             driverClassName = "org.postgresql.Driver"
-            jdbcUrl = "jdbc:postgresql://${databaseHost}:${dbPort}/${dbName}"
+            jdbcUrl = "jdbc:postgresql://$databaseHost:$dbPort/$dbName"
             username = dbUser
             password = dbPassword
             isAutoCommit = false
