@@ -207,10 +207,10 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                 )
                 email.isStartTLSEnabled = true
                 email.setFrom("")
-                email.subject = "Complete Password Reset!"
+                email.subject = "Reset de senha!"
                 email.setMsg(
-                    "To complete the password reset process, " +
-                        "please click here: \n https://blogfy-server.herokuapp.com/auth/confirm-reset-password?token=${token.accessToken}",
+                    "Para prosseguir com o processo de reset de senha, " +
+                        "por favor, clique aqui: \n https://nc-server-332d35e07665.herokuapp.com/auth/confirm-reset-password?token=${token.accessToken}",
                 )
                 email.addTo("")
                 email.send()
