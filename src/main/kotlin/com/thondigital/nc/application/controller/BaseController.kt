@@ -10,6 +10,7 @@ import com.thondigital.nc.application.model.request.UpdatePasswordRequest
 import com.thondigital.nc.application.model.response.AuthResponse
 import com.thondigital.nc.application.utils.isAlphaNumeric
 import com.thondigital.nc.application.utils.isEmailValid
+import com.thondigital.nc.application.utils.isValidName
 import com.thondigital.nc.data.dao.TokenDao
 import com.thondigital.nc.data.dao.UserDao
 import com.thondigital.nc.data.model.BlogDataModel
@@ -41,14 +42,14 @@ abstract class BaseController : KoinComponent {
         val message =
             when {
                 (
-                    signUpRequest.email.isBlank() or
-                        (signUpRequest.username.isBlank()) or
-                        (signUpRequest.password.isBlank()) or
-                        (signUpRequest.confirmPassword.isBlank())
-                ) -> "Fields should not be blank"
+                        signUpRequest.email.isBlank() or
+                                (signUpRequest.username.isBlank()) or
+                                (signUpRequest.password.isBlank()) or
+                                (signUpRequest.confirmPassword.isBlank())
+                        ) -> "Fields should not be blank"
 
                 (!signUpRequest.email.isEmailValid()) -> "Email invalid"
-                (!signUpRequest.username.isAlphaNumeric()) -> "No special characters allowed in username"
+                (!signUpRequest.username.isValidName()) -> "No special characters allowed in username"
                 (signUpRequest.username.length !in (4..30)) -> "Username should be of min 4 and max 30 character in length"
                 (signUpRequest.password.length !in (8..50)) -> "Password should be of min 8 and max 50 character in length"
                 (signUpRequest.confirmPassword.length !in (8..50)) -> "Password should be of min 8 and max 50 character in length"
@@ -73,9 +74,9 @@ abstract class BaseController : KoinComponent {
         val message =
             when {
                 (
-                    updatePasswordRequest.currentPassword.isBlank() || updatePasswordRequest.newPassword.isBlank() ||
-                        updatePasswordRequest.confirmNewPassword.isBlank()
-                ) -> {
+                        updatePasswordRequest.currentPassword.isBlank() || updatePasswordRequest.newPassword.isBlank() ||
+                                updatePasswordRequest.confirmNewPassword.isBlank()
+                        ) -> {
                     "Password field should not be blank"
                 }
 

@@ -12,3 +12,5 @@ const val MAIL_REGEX = (
 fun String.isEmailValid(): Boolean = this.isNotBlank() && Regex(MAIL_REGEX).matches(this)
 
 fun String.isAlphaNumeric() = matches("[a-zA-Z0-9]+".toRegex())
+
+fun String.isValidName() = matches("^[a-zA-ZÀ-ÿ]+(?: [a-zA-ZÀ-ÿ]+)+$".toRegex())
