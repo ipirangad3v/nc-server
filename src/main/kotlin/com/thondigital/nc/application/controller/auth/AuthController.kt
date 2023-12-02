@@ -43,14 +43,14 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
             userDao.findByEmail(userEmail!!)?.let { user ->
                 val tokens = tokenProvider.createTokens(user)
                 AuthResponse.success(
-                    "Sign in successfully",
+                    "Login realizado com sucesso",
                     tokens.accessToken,
                     tokens.refreshToken,
                 )
             } ?: userDao.storeUser(userEmail, idpAuthenticationRequest.username, null).let {
                 val tokens = tokenProvider.createTokens(it)
                 AuthResponse.success(
-                    "Sign up successfully",
+                    "Registro realizado com sucesso",
                     tokens.accessToken,
                     tokens.refreshToken,
                 )
@@ -67,11 +67,11 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                 verifyPasswordOrThrowException(signInRequest.password, it)
                 val tokens = tokenProvider.createTokens(it)
                 AuthResponse.success(
-                    "Sign in successfully",
+                    "Login realizado com sucesso",
                     tokens.accessToken,
                     tokens.refreshToken,
                 )
-            } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+            } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
         } catch (e: BadRequestException) {
             GeneralResponse.failed(e.message)
         } catch (e: UnauthorizedActivityException) {
@@ -87,7 +87,7 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
             val user = userDao.storeUser(signUpRequest.email, signUpRequest.username, encryptedPassword)
             val tokens = tokenProvider.createTokens(user)
             AuthResponse.success(
-                "Sign up successfully",
+                "Registro realizado com sucesso",
                 tokens.accessToken,
                 tokens.refreshToken,
             )
@@ -110,18 +110,18 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                     val tokens = tokenProvider.createTokens(it)
                     refreshTokensDao.store(userId, token, expirationTime)
                     AuthResponse.success(
-                        "Tokens updated",
+                        "Tokens atualizados",
                         tokens.accessToken,
                         tokens.refreshToken,
                     )
-                } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
-            } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+                } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
+            } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
         } catch (e: TokenExpiredException) {
-            GeneralResponse.failed("Authentication failed: Refresh token expired")
+            GeneralResponse.failed("Autenticação falhou: Refresh token expirado")
         } catch (e: SignatureVerificationException) {
-            GeneralResponse.failed("Authentication failed: Failed to parse Refresh token")
+            GeneralResponse.failed("Autenticação falhou: Falha ao analisar o Refresh token")
         } catch (e: JWTDecodeException) {
-            GeneralResponse.failed("Authentication failed: Failed to parse Refresh token")
+            GeneralResponse.failed("Autenticação falhou: Falha ao analisar o Refresh token")
         } catch (e: BadRequestException) {
             GeneralResponse.failed(e.message)
         } catch (e: UnauthorizedActivityException) {
@@ -141,16 +141,16 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                 userDao.findByID(userId)?.let {
                     storeToken(token)
                     GeneralResponse.success(
-                        "Sign out successfully",
+                        "Logout realizado com sucesso",
                     )
-                } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
-            } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+                } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
+            } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
         } catch (e: TokenExpiredException) {
-            GeneralResponse.success("Revocation success: Refresh token already expired")
+            GeneralResponse.success("Revogação realizada com sucesso: Refresh token já expirado")
         } catch (e: SignatureVerificationException) {
-            GeneralResponse.success("Revocation failed: Failed to parse Refresh token")
+            GeneralResponse.success("Revogação falhou: Falha ao analisar o Refresh token")
         } catch (e: JWTDecodeException) {
-            GeneralResponse.success("Revocation failed: Failed to parse Refresh token")
+            GeneralResponse.success("Revogação falhou: Falha ao analisar o Refresh token")
         } catch (e: BadRequestException) {
             GeneralResponse.failed(e.message)
         } catch (e: UnauthorizedActivityException) {
@@ -162,8 +162,8 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
         return try {
             val userId = ctx.principal<UserPrincipal>()?.user?.id
             userDao.findByID(userId!!)?.let {
-                AccountResponse.success("User found", it.id, it.username, it.email)
-            } ?: throw UnauthorizedActivityException("User do not exist")
+                AccountResponse.success("Usuário encontrado", it.id, it.username, it.email)
+            } ?: throw UnauthorizedActivityException("Usuário não existe")
         } catch (e: UnauthorizedActivityException) {
             GeneralResponse.notFound(e.message)
         }
@@ -181,9 +181,9 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                 verifyPasswordOrThrowException(updatePasswordRequest.currentPassword, user)
                 userDao.updatePassword(user.id, encryptedPassword)
                 GeneralResponse.success(
-                    "Password updated",
+                    "Senha atualizada",
                 )
-            } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+            } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
         } catch (e: BadRequestException) {
             GeneralResponse.failed(e.message)
         } catch (e: UnauthorizedActivityException) {
@@ -210,14 +210,14 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                 email.subject = "Reset de senha!"
                 email.setMsg(
                     "Para prosseguir com o processo de reset de senha, " +
-                        "por favor, clique aqui: \n https://nc-server-332d35e07665.herokuapp.com/auth/confirm-reset-password?token=${token.accessToken}",
+                            "por favor, clique aqui: \n https://nc-server-332d35e07665.herokuapp.com/auth/confirm-reset-password?token=${token.accessToken}",
                 )
                 email.addTo("")
                 email.send()
                 GeneralResponse.success(
-                    "Request to reset password received. Check your inbox for the reset link.",
+                    "Solicitação para redefinir a senha recebida. Verifique sua caixa de entrada para o link de redefinição.",
                 )
-            } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+            } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
         } catch (e: BadRequestException) {
             GeneralResponse.failed(e.message)
         } catch (e: UnauthorizedActivityException) {
@@ -242,16 +242,16 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                     storeToken(token)
                     userDao.updatePassword(userId, encryptedPassword)
                     GeneralResponse.success(
-                        "Password updated",
+                        "Senha atualizada",
                     )
-                } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
-            } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+                } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
+            } ?: throw UnauthorizedActivityException("Autenticação falhou: Credenciais inválidas")
         } catch (e: TokenExpiredException) {
-            GeneralResponse.failed("Reset link has been revoked")
+            GeneralResponse.failed("O link de redefinição foi revogado")
         } catch (e: SignatureVerificationException) {
-            GeneralResponse.failed("Authentication failed: Failed to parse token")
+            GeneralResponse.failed("Autenticação falhou: Falha ao analisar o token")
         } catch (e: JWTDecodeException) {
-            GeneralResponse.failed("Authentication failed: Failed to parse token")
+            GeneralResponse.failed("Autenticação falhou: Falha ao analisar o token")
         } catch (e: BadRequestException) {
             GeneralResponse.failed(e.message)
         } catch (e: UnauthorizedActivityException) {
