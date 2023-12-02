@@ -8,16 +8,15 @@ import com.thondigital.nc.application.model.request.SignInRequest
 import com.thondigital.nc.application.model.request.SignUpRequest
 import com.thondigital.nc.application.model.request.UpdatePasswordRequest
 import com.thondigital.nc.application.model.response.AuthResponse
-import com.thondigital.nc.application.utils.isAlphaNumeric
 import com.thondigital.nc.application.utils.isEmailValid
 import com.thondigital.nc.application.utils.isValidName
 import com.thondigital.nc.data.dao.TokenDao
 import com.thondigital.nc.data.dao.UserDao
 import com.thondigital.nc.data.model.BlogDataModel
 import com.thondigital.nc.data.model.User
+import java.text.SimpleDateFormat
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.text.SimpleDateFormat
 
 abstract class BaseController : KoinComponent {
     private val userDao by inject<UserDao>()
@@ -29,9 +28,9 @@ abstract class BaseController : KoinComponent {
     internal fun validateSignInFieldsOrThrowException(signInRequest: SignInRequest) {
         val message =
             when {
-                (signInRequest.email.isBlank() or (signInRequest.password.isBlank())) -> "Credentials fields should not be blank"
-                (!signInRequest.email.isEmailValid()) -> "Email invalid"
-                (signInRequest.password.length !in (8..50)) -> "Password should be of min 8 and max 50 character in length"
+                (signInRequest.email.isBlank() or (signInRequest.password.isBlank())) -> "Os campos de credenciais não devem estar em branco"
+                (!signInRequest.email.isEmailValid()) -> "E-mail inválido"
+                (signInRequest.password.length !in (8..50)) -> "A senha deve ter entre 8 e 50 caracteres de comprimento"
                 else -> return
             }
 
@@ -46,14 +45,14 @@ abstract class BaseController : KoinComponent {
                                 (signUpRequest.username.isBlank()) or
                                 (signUpRequest.password.isBlank()) or
                                 (signUpRequest.confirmPassword.isBlank())
-                        ) -> "Fields should not be blank"
+                        ) -> "Os campos não devem estar em branco"
 
-                (!signUpRequest.email.isEmailValid()) -> "Email invalid"
-                (!signUpRequest.username.isValidName()) -> "No special characters allowed in username"
-                (signUpRequest.username.length !in (4..30)) -> "Username should be of min 4 and max 30 character in length"
-                (signUpRequest.password.length !in (8..50)) -> "Password should be of min 8 and max 50 character in length"
-                (signUpRequest.confirmPassword.length !in (8..50)) -> "Password should be of min 8 and max 50 character in length"
-                (signUpRequest.password != signUpRequest.confirmPassword) -> "Passwords do not match"
+                (!signUpRequest.email.isEmailValid()) -> "E-mail inválido"
+                (!signUpRequest.username.isValidName()) -> "Nenhum caractere especial é permitido no nome de usuário"
+                (signUpRequest.username.length !in (4..30)) -> "O nome de usuário deve ter entre 4 e 30 caracteres de comprimento"
+                (signUpRequest.password.length !in (8..50)) -> "A senha deve ter entre 8 e 50 caracteres de comprimento"
+                (signUpRequest.confirmPassword.length !in (8..50)) -> "A senha deve ter entre 8 e 50 caracteres de comprimento"
+                (signUpRequest.password != signUpRequest.confirmPassword) -> "As senhas não coincidem"
                 else -> return
             }
 
@@ -63,7 +62,7 @@ abstract class BaseController : KoinComponent {
     internal fun validateResetPasswordFieldsOrThrowException(email: String) {
         val message =
             when {
-                (email.isBlank()) -> "Email field should not be blank"
+                (email.isBlank()) -> "O campo de e-mail não pode estar vazio"
                 else -> return
             }
 
@@ -77,12 +76,12 @@ abstract class BaseController : KoinComponent {
                         updatePasswordRequest.currentPassword.isBlank() || updatePasswordRequest.newPassword.isBlank() ||
                                 updatePasswordRequest.confirmNewPassword.isBlank()
                         ) -> {
-                    "Password field should not be blank"
+                    "O campo de senha não pode estar vazio"
                 }
 
-                updatePasswordRequest.newPassword != updatePasswordRequest.confirmNewPassword -> "Passwords do not match"
-                updatePasswordRequest.newPassword.length !in (8..50) -> "Password should be of min 8 and max 50 character in length"
-                updatePasswordRequest.confirmNewPassword.length !in (8..50) -> "Password should be of min 8 and max 50 character in length"
+                updatePasswordRequest.newPassword != updatePasswordRequest.confirmNewPassword -> "As senhas não coincidem"
+                updatePasswordRequest.newPassword.length !in (8..50) -> "A senha deve ter entre 8 e 50 caracteres de comprimento"
+                updatePasswordRequest.confirmNewPassword.length !in (8..50) -> "A senha deve ter entre 8 e 50 caracteres de comprimento"
                 else -> return
             }
 
@@ -90,13 +89,13 @@ abstract class BaseController : KoinComponent {
     }
 
     internal fun validateTokenParametersOrThrowException(token: String?) {
-        if (token == null) throw BadRequestException("Missing token query parameter")
+        if (token == null) throw BadRequestException("Parâmetro de consulta de token ausente")
     }
 
     internal fun validateRefreshTokenFieldsOrThrowException(token: String) {
         val message =
             when {
-                (token.isBlank()) -> "Authentication failed: Token field should not be blank"
+                (token.isBlank()) -> "Falha na autenticação: O campo de token não deve estar em branco"
                 else -> return
             }
 
@@ -106,18 +105,18 @@ abstract class BaseController : KoinComponent {
     internal fun validateSignOutFieldsOrThrowException(token: String) {
         val message =
             when {
-                (token.isBlank()) -> "Authentication failed: Token field should not be blank"
+                (token.isBlank()) -> "Falha na autenticação: O campo de token não deve estar em branco"
                 else -> return
             }
         throw BadRequestException(message)
     }
 
     internal fun validateRefreshTokenType(tokenType: String) {
-        if (tokenType != "refreshToken") throw BadRequestException("Authentication failed: Invalid token type")
+        if (tokenType != "refreshToken") throw BadRequestException("Falha na autenticação: Tipo de token inválido")
     }
 
     internal fun validateAccessTokenType(tokenType: String) {
-        if (tokenType != "accessToken") throw BadRequestException("Authentication failed: Invalid token type")
+        if (tokenType != "accessToken") throw BadRequestException("Falha na autenticação: Tipo de token inválido")
     }
 
     internal suspend fun verifyTokenRevocation(
@@ -129,7 +128,7 @@ abstract class BaseController : KoinComponent {
                 token,
             )
         ) {
-            throw UnauthorizedActivityException("Authentication failed: Token has been revoked")
+            throw UnauthorizedActivityException("Falha na autenticação: O token foi revogado")
         }
     }
 
@@ -139,13 +138,12 @@ abstract class BaseController : KoinComponent {
     ) {
         user.password?.let {
             if (!passwordEncryption.validatePassword(password, it)) {
-                throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+                throw UnauthorizedActivityException("Falha na autenticação: Credenciais inválidas")
             }
-        } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+        } ?: throw UnauthorizedActivityException("Falha na autenticação: Credenciais inválidas")
     }
 
     internal suspend fun storeToken(token: String) {
-        val simpleDateFormat = SimpleDateFormat("'Date: 'yyyy-MM-dd' Time: 'HH:mm:ss")
         val expirationTime = tokenProvider.getTokenExpiration(token)
         val convertedExpirationTime = simpleDateFormat.format(expirationTime)
 
@@ -157,8 +155,8 @@ abstract class BaseController : KoinComponent {
                         token,
                         convertedExpirationTime,
                     )
-                } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
-            } ?: throw UnauthorizedActivityException("Authentication failed: Invalid credentials")
+                } ?: throw UnauthorizedActivityException("Falha na autenticação: Credenciais inválidas")
+            } ?: throw UnauthorizedActivityException("Falha na autenticação: Credenciais inválidas")
         } catch (uae: UnauthorizedActivityException) {
             AuthResponse.unauthorized(uae.message)
         }
@@ -185,10 +183,10 @@ abstract class BaseController : KoinComponent {
     ) {
         val message =
             when {
-                blogId == null -> "Blog id should not be null or empty"
-                title.count() < 3 -> "Title must be at least 3 characters"
-                description.count() < 7 -> "Description must be at least 8 characters"
-                creationTime.isBlank() -> "Creation time must not be blank"
+                blogId == null -> "O ID do blog não pode ser nulo ou vazio"
+                title.count() < 3 -> "O título deve ter no mínimo 3 caracteres"
+                description.count() < 7 -> "A descrição deve ter no mínimo 8 caracteres"
+                creationTime.isBlank() -> "O tempo de criação não pode ser nulo ou vazio"
                 else -> return
             }
         throw BadRequestException(message)
@@ -201,9 +199,9 @@ abstract class BaseController : KoinComponent {
     ) {
         val message =
             when {
-                blogId == null -> "Blog id should not be null or empty"
-                title.count() < 3 -> "Title must be at least 3 characters"
-                description.count() < 7 -> "Description must be at least 8 characters"
+                blogId == null -> "O ID do blog não pode ser nulo ou vazio"
+                title.length < 3 -> "O título deve ter no mínimo 3 caracteres"
+                description.length < 7 -> "A descrição deve ter no mínimo 8 caracteres"
                 else -> return
             }
         throw BadRequestException(message)
@@ -211,7 +209,7 @@ abstract class BaseController : KoinComponent {
 
     internal suspend fun verifyEmail(email: String) {
         if (!userDao.isEmailAvailable(email)) {
-            throw BadRequestException("Authentication failed: Email is already taken")
+            throw BadRequestException("Falha na autenticação: E-mail já cadastrado")
         }
     }
 
@@ -234,7 +232,7 @@ abstract class BaseController : KoinComponent {
         page: Int,
         blogs: List<List<BlogDataModel>>,
     ) {
-        if (!(page > 0 && page <= blogs.size)) throw BadRequestException("Invalid page")
+        if (!(page > 0 && page <= blogs.size)) throw BadRequestException("Página inválida")
     }
 
     internal fun calculatePage(
