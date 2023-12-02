@@ -11,7 +11,6 @@ import com.thondigital.nc.application.plugins.configureSecurity
 import com.thondigital.nc.application.plugins.configureSerialization
 import com.thondigital.nc.data.dao.UserDao
 import com.thondigital.nc.data.database.DatabaseProviderContract
-import io.github.cdimascio.dotenv.dotenv
 import io.ktor.application.Application
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -34,8 +33,7 @@ fun Application.module() {
                 serializer = KotlinxSerializer()
             }
         }
-    val dotenv = dotenv()
-    val apiKey = dotenv["ONESIGNAL_API_KEY"]
+    val apiKey = System.getenv("ONESIGNAL_API_KEY")
 
     configureKoin()
     configureMonitoring()

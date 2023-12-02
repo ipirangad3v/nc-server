@@ -7,7 +7,6 @@ import com.thondigital.nc.data.database.table.Tokens
 import com.thondigital.nc.data.database.table.Users
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newFixedThreadPoolContext
 import org.jetbrains.exposed.sql.Database
@@ -34,8 +33,7 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
     }
 
     private fun hikari(): HikariDataSource {
-        val dotenv = dotenv()
-        val apiKey = dotenv["LOCAL_DEPLOYMENT"]
+        val apiKey = System.getenv("LOCAL_DEPLOYMENT")
 
         return when (apiKey) {
             "true" -> {
@@ -77,12 +75,11 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
     // For heroku deployement
     private fun hikariHeroku(): HikariDataSource {
-        val dotenv = dotenv()
-        val databaseHost = dotenv["HOST_URL"]
-        val dbPort = dotenv["DB_PORT"]
-        val dbName = dotenv["DB_NAME"]
-        val dbPassword = dotenv["DB_PASSWORD"]
-        val dbUser = dotenv["DB_USER"]
+        val databaseHost = System.getenv("HOST_URL")
+        val dbPort = System.getenv("DB_PORT")
+        val dbName = System.getenv("DB_NAME")
+        val dbPassword = System.getenv("DB_PASSWORD")
+        val dbUser = System.getenv("DB_USER")
 
         HikariConfig().run {
             driverClassName = "org.postgresql.Driver"
