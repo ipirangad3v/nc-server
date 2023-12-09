@@ -261,13 +261,14 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
 
     override suspend fun deleteAccount(ctx: ApplicationCall): Response {
         return try {
-            ctx.principal<UserPrincipal>()?.user?.id?.let {
-                userDao.deleteUser(it)
+            if (ctx.principal<UserPrincipal>()?.user?.id == null) {
+                GeneralResponse.failed("Autenticação falhou: Credenciais inválidas")
+            } else {
+                userDao.deleteUser(ctx.principal<UserPrincipal>()?.user?.id!!)
                 GeneralResponse.success(
                     "Conta deletada com sucesso",
                 )
             }
-            GeneralResponse.failed("Autenticação falhou: Credenciais inválidas")
 
 
         } catch (e: BadRequestException) {
