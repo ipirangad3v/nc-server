@@ -7,6 +7,7 @@ interface UserDao {
         email: String,
         username: String,
         password: String?,
+        isAdmin: Boolean,
     ): User
 
     suspend fun findByID(userId: Int): User?

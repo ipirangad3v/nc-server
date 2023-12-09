@@ -11,17 +11,20 @@ object Users : IntIdTable(), UserDao {
     val email = varchar("email", length = 30).uniqueIndex()
     val username = varchar("username", length = 30)
     val password = text("password").nullable()
+    val isAdmin = bool("isAdmin").default(false)
 
     override suspend fun storeUser(
         email: String,
         username: String,
         password: String?,
+        isAdmin: Boolean,
     ): User =
         newSuspendedTransaction(Dispatchers.IO) {
             EntityUser.new {
                 this.email = email
                 this.username = username
                 this.password = password
+                this.isAdmin = isAdmin
             }.let {
                 User.fromEntity(it)
             }

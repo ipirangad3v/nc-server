@@ -47,7 +47,7 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                     tokens.accessToken,
                     tokens.refreshToken,
                 )
-            } ?: userDao.storeUser(userEmail, idpAuthenticationRequest.username, null).let {
+            } ?: userDao.storeUser(userEmail, idpAuthenticationRequest.username, null, false).let {
                 val tokens = tokenProvider.createTokens(it)
                 AuthResponse.success(
                     "Registro realizado com sucesso",
@@ -84,7 +84,7 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
             validateSignUpFieldsOrThrowException(signUpRequest)
             verifyEmail(signUpRequest.email)
             val encryptedPassword = getEncryptedPassword(signUpRequest.password)
-            val user = userDao.storeUser(signUpRequest.email, signUpRequest.username, encryptedPassword)
+            val user = userDao.storeUser(signUpRequest.email, signUpRequest.username, encryptedPassword, false)
             val tokens = tokenProvider.createTokens(user)
             AuthResponse.success(
                 "Registro realizado com sucesso",
