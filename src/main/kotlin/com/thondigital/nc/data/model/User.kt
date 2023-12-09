@@ -7,8 +7,10 @@ data class User(
     val email: String,
     val username: String,
     val password: String?,
+    val isAdmin: Boolean,
 ) {
     companion object {
-        fun fromEntity(entity: EntityUser) = User(entity.id.value, entity.email, entity.username, entity.password)
+        fun fromEntity(entity: EntityUser) =
+            User(entity.id.value, entity.email, entity.username, entity.password, entity.isAdmin)
     }
 }

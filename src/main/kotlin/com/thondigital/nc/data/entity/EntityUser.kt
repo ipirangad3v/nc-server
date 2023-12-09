@@ -11,4 +11,5 @@ class EntityUser(id: EntityID<Int>) : IntEntity(id) {
     var email by Users.email
     var username by Users.username
     var password by Users.password
+    var isAdmin = false
 }
