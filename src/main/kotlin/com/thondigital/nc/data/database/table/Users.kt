@@ -57,4 +57,10 @@ object Users : IntIdTable(), UserDao {
             }.id.value.toString()
         }
     }
+
+    override suspend fun deleteUser(userId: Int) {
+        newSuspendedTransaction(Dispatchers.IO) {
+            EntityUser[userId].delete()
+        }
+    }
 }

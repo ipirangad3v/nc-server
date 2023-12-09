@@ -29,7 +29,8 @@ fun Route.authApi() {
                 // Single endpoint for both signing and registration
                 post("/google") {
                     val idpAuthenticationRequest = call.receive<IdpAuthenticationRequest>()
-                    val idpAuthenticationResponse = authController.idpAuthentication(idpAuthenticationRequest, this.context)
+                    val idpAuthenticationResponse =
+                        authController.idpAuthentication(idpAuthenticationRequest, this.context)
                     val response = generateHttpResponse(idpAuthenticationResponse)
                     call.respond(response.code, response.body)
                 }
@@ -65,6 +66,18 @@ fun Route.authApi() {
                     authController.revokeToken(revokeTokenRequest)
                 val response = generateHttpResponse(revokeTokenResponse)
                 call.respond(response.code, response.body)
+            }
+        }
+        route("/delete") {
+            authenticate("jwt") {
+                post {
+                    val deleteAccountResponse =
+                        authController.deleteAccount(
+                            this.context
+                        )
+                    val response = generateHttpResponse(deleteAccountResponse)
+                    call.respond(response.code, response.body)
+                }
             }
         }
 

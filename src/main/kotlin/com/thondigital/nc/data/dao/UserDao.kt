@@ -19,4 +19,6 @@ interface UserDao {
         userId: Int,
         password: String,
     )
+
+    suspend fun deleteUser(userId: Int)
 }
