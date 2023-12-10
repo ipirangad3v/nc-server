@@ -6,7 +6,6 @@ val exposedVersion: String by project
 val hikariVersion: String by project
 val postgresVersion: String by project
 val bcryptVersion: String by project
-val firebaseAdminVersion: String by project
 val commonsEmailVersion: String by project
 val kotestVersion: String by project
 val testContainerVersion: String by project
@@ -71,6 +70,4 @@ dependencies {
     // For sending reset-password-mail
     implementation("org.apache.commons:commons-email:$commonsEmailVersion")
 
-    // Firebase admin
-    implementation("com.google.firebase:firebase-admin:$firebaseAdminVersion")
 }
