@@ -14,15 +14,15 @@ import com.thondigital.nc.application.model.response.Links
 import com.thondigital.nc.application.model.response.Pagination
 import com.thondigital.nc.application.model.response.Response
 import com.thondigital.nc.data.dao.BlogsDao
-import io.ktor.application.ApplicationCall
-import io.ktor.auth.principal
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.post
-import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.auth.principal
+import io.ktor.util.InternalAPI
 import org.jetbrains.exposed.dao.exceptions.EntityNotFoundException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -78,14 +78,14 @@ class DefaultBlogController : BaseController(), BlogController, KoinComponent {
         }
     }
 
+    @OptIn(InternalAPI::class)
     override suspend fun sendNotification(
         httpClient: HttpClient,
         apiKey: String,
         notification: Notification,
     ): Response {
         return try {
-            httpClient.post<String> {
-                url(BlogController.NOTIFICATIONS)
+            httpClient.post(BlogController.NOTIFICATIONS) {
                 contentType(ContentType.Application.Json)
                 header("Authorization", "Basic $apiKey")
                 body = notification

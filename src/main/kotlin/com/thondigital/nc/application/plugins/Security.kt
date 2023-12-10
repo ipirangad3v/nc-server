@@ -4,26 +4,21 @@ import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.auth0.jwt.interfaces.JWTVerifier
-import com.thondigital.nc.application.auth.firebase.FirebaseConfig.configure
-import com.thondigital.nc.application.auth.firebase.firebase
 import com.thondigital.nc.application.auth.principal.UserPrincipal
 import com.thondigital.nc.application.model.response.GeneralResponse
 import com.thondigital.nc.data.dao.UserDao
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.jwt.jwt
 import io.ktor.http.HttpStatusCode
-import io.ktor.response.respond
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.response.respond
 
 fun Application.configureSecurity(
     userDao: UserDao,
     jwtVerifier: JWTVerifier,
 ) {
     install(Authentication) {
-        firebase { configure() }
-
         jwt("jwt") {
             verifier(jwtVerifier)
 
@@ -62,7 +57,8 @@ fun Application.configureSecurity(
                         )
                     }
                 } ?: call.respond(
-                    HttpStatusCode.Unauthorized, GeneralResponse.unauthorized("Authentication failed: No authorization header found"),
+                    HttpStatusCode.Unauthorized,
+                    GeneralResponse.unauthorized("Authentication failed: No authorization header found"),
                 )
                 GeneralResponse.unauthorized("Unauthorized")
             }

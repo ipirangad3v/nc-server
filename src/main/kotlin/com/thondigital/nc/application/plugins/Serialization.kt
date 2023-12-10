@@ -1,9 +1,9 @@
 package com.thondigital.nc.application.plugins
 
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.serialization.json
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 
 fun Application.configureSerialization() {
     install(ContentNegotiation) {

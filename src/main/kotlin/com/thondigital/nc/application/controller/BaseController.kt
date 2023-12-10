@@ -14,9 +14,9 @@ import com.thondigital.nc.data.dao.TokenDao
 import com.thondigital.nc.data.dao.UserDao
 import com.thondigital.nc.data.model.BlogDataModel
 import com.thondigital.nc.data.model.User
-import java.text.SimpleDateFormat
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.text.SimpleDateFormat
 
 abstract class BaseController : KoinComponent {
     private val userDao by inject<UserDao>()
@@ -28,7 +28,11 @@ abstract class BaseController : KoinComponent {
     internal fun validateSignInFieldsOrThrowException(signInRequest: SignInRequest) {
         val message =
             when {
-                (signInRequest.email.isBlank() or (signInRequest.password.isBlank())) -> "Os campos de credenciais não devem estar em branco"
+                (
+                    signInRequest.email.isBlank() or
+                        (signInRequest.password.isBlank())
+                ) -> "Os campos de credenciais não devem estar em branco"
+
                 (!signInRequest.email.isEmailValid()) -> "E-mail inválido"
                 (signInRequest.password.length !in (8..50)) -> "A senha deve ter entre 8 e 50 caracteres de comprimento"
                 else -> return
@@ -41,11 +45,11 @@ abstract class BaseController : KoinComponent {
         val message =
             when {
                 (
-                        signUpRequest.email.isBlank() or
-                                (signUpRequest.username.isBlank()) or
-                                (signUpRequest.password.isBlank()) or
-                                (signUpRequest.confirmPassword.isBlank())
-                        ) -> "Os campos não devem estar em branco"
+                    signUpRequest.email.isBlank() or
+                        (signUpRequest.username.isBlank()) or
+                        (signUpRequest.password.isBlank()) or
+                        (signUpRequest.confirmPassword.isBlank())
+                ) -> "Os campos não devem estar em branco"
 
                 (!signUpRequest.email.isEmailValid()) -> "E-mail inválido"
                 (!signUpRequest.username.isValidName()) -> "Nenhum caractere especial é permitido no nome de usuário"
@@ -73,9 +77,9 @@ abstract class BaseController : KoinComponent {
         val message =
             when {
                 (
-                        updatePasswordRequest.currentPassword.isBlank() || updatePasswordRequest.newPassword.isBlank() ||
-                                updatePasswordRequest.confirmNewPassword.isBlank()
-                        ) -> {
+                    updatePasswordRequest.currentPassword.isBlank() || updatePasswordRequest.newPassword.isBlank() ||
+                        updatePasswordRequest.confirmNewPassword.isBlank()
+                ) -> {
                     "O campo de senha não pode estar vazio"
                 }
 

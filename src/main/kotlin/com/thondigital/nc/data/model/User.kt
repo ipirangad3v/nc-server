@@ -10,7 +10,6 @@ data class User(
     val isAdmin: Boolean,
 ) {
     companion object {
-        fun fromEntity(entity: EntityUser) =
-            User(entity.id.value, entity.email, entity.username, entity.password, entity.isAdmin)
+        fun fromEntity(entity: EntityUser) = User(entity.id.value, entity.email, entity.username, entity.password, entity.isAdmin)
     }
 }

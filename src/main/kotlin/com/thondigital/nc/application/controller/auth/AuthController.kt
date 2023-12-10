@@ -4,12 +4,10 @@ import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.thondigital.nc.application.auth.TokenProvider
-import com.thondigital.nc.application.auth.firebase.FirebaseUserPrincipal
 import com.thondigital.nc.application.auth.principal.UserPrincipal
 import com.thondigital.nc.application.controller.BaseController
 import com.thondigital.nc.application.exception.BadRequestException
 import com.thondigital.nc.application.exception.UnauthorizedActivityException
-import com.thondigital.nc.application.model.request.IdpAuthenticationRequest
 import com.thondigital.nc.application.model.request.RefreshTokenRequest
 import com.thondigital.nc.application.model.request.RevokeTokenRequest
 import com.thondigital.nc.application.model.request.SignInRequest
@@ -21,9 +19,9 @@ import com.thondigital.nc.application.model.response.GeneralResponse
 import com.thondigital.nc.application.model.response.Response
 import com.thondigital.nc.data.dao.TokenDao
 import com.thondigital.nc.data.dao.UserDao
-import io.ktor.application.ApplicationCall
-import io.ktor.auth.principal
 import io.ktor.http.Parameters
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.auth.principal
 import org.apache.commons.mail.DefaultAuthenticator
 import org.apache.commons.mail.SimpleEmail
 import org.koin.core.component.KoinComponent
@@ -33,32 +31,6 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
     private val userDao by inject<UserDao>()
     private val refreshTokensDao by inject<TokenDao>()
     private val tokenProvider by inject<TokenProvider>()
-
-    override suspend fun idpAuthentication(
-        idpAuthenticationRequest: IdpAuthenticationRequest,
-        ctx: ApplicationCall,
-    ): Response {
-        return try {
-            val userEmail = ctx.principal<FirebaseUserPrincipal>()?.email
-            userDao.findByEmail(userEmail!!)?.let { user ->
-                val tokens = tokenProvider.createTokens(user)
-                AuthResponse.success(
-                    "Login realizado com sucesso",
-                    tokens.accessToken,
-                    tokens.refreshToken,
-                )
-            } ?: userDao.storeUser(userEmail, idpAuthenticationRequest.username, null, false).let {
-                val tokens = tokenProvider.createTokens(it)
-                AuthResponse.success(
-                    "Registro realizado com sucesso",
-                    tokens.accessToken,
-                    tokens.refreshToken,
-                )
-            }
-        } catch (e: BadRequestException) {
-            GeneralResponse.failed(e.message)
-        }
-    }
 
     override suspend fun signIn(signInRequest: SignInRequest): Response {
         return try {
@@ -210,7 +182,8 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                 email.subject = "Reset de senha!"
                 email.setMsg(
                     "Para prosseguir com o processo de reset de senha, " +
-                            "por favor, clique aqui: \n https://nc-server-332d35e07665.herokuapp.com/auth/confirm-reset-password?token=${token.accessToken}",
+                        "por favor, clique aqui: \n https://nc-server-332d35e07665.herokuapp.com/" +
+                        "auth/confirm-reset-password?token=${token.accessToken}",
                 )
                 email.addTo("")
                 email.send()
@@ -269,8 +242,6 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
                     "Conta deletada com sucesso",
                 )
             }
-
-
         } catch (e: BadRequestException) {
             GeneralResponse.failed(e.message)
         }
@@ -278,11 +249,6 @@ class DefaultAuthController : BaseController(), AuthController, KoinComponent {
 }
 
 interface AuthController {
-    suspend fun idpAuthentication(
-        idpAuthenticationRequest: IdpAuthenticationRequest,
-        ctx: ApplicationCall,
-    ): Response
-
     suspend fun signIn(signInRequest: SignInRequest): Response
 
     suspend fun signUp(signUpRequest: SignUpRequest): Response
