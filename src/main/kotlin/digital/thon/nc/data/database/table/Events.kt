@@ -30,8 +30,8 @@ object Events : IntIdTable(), EventDao {
         date: String,
         time: String,
         location: String,
-        image: String,
-        link: String,
+        image: String?,
+        link: String?,
     ): Int {
         return newSuspendedTransaction(Dispatchers.IO) {
             EntityEvent.new {

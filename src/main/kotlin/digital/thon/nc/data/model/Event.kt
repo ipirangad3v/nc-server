@@ -1,7 +1,9 @@
 package digital.thon.nc.data.model
 
 import digital.thon.nc.data.entity.EntityEvent
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Event(
     val id: String,
     val name: String,
@@ -9,8 +11,8 @@ data class Event(
     val date: String,
     val time: String,
     val location: String,
-    val image: String,
-    val link: String,
+    val image: String? = null,
+    val link: String? = null,
 ) {
     companion object {
         fun fromEntity(entity: EntityEvent): Event {

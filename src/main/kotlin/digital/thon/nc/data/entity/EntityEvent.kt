@@ -12,8 +12,8 @@ class EntityEvent(
     var date: String,
     var time: String,
     var location: String,
-    var image: String,
-    var link: String,
+    var image: String?,
+    var link: String?,
 ) : IntEntity(id) {
     companion object : IntEntityClass<EntityEvent>(Events)
 }

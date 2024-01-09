@@ -13,8 +13,8 @@ interface EventDao {
         date: String,
         time: String,
         location: String,
-        image: String,
-        link: String,
+        image: String? = null,
+        link: String? = null,
     ): Int
 
     suspend fun update(

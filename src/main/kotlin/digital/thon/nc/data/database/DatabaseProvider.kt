@@ -46,10 +46,10 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
 
     private fun hikariLocal(): HikariDataSource {
         HikariConfig().run {
-            driverClassName = driverClass
-            jdbcUrl = "jdbc:postgresql://$host:$port/$dbname"
-            username = user
-            password = dbpassword
+            driverClassName = DRIVER_CLASS
+            jdbcUrl = "jdbc:postgresql://$HOST:$PORT/$DB_NAME"
+            username = USER
+            password = DB_PASSWORD
             isAutoCommit = false
             maximumPoolSize = 5
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
@@ -59,12 +59,12 @@ class DatabaseProvider : DatabaseProviderContract, KoinComponent {
     }
 
     companion object DatabaseConfig {
-        const val driverClass = "org.postgresql.Driver"
-        const val host = "localhost"
-        const val port = 3500
-        const val dbname = "nc_server"
-        const val user = "postgres"
-        const val dbpassword = "root"
+        const val DRIVER_CLASS = "org.postgresql.Driver"
+        const val HOST = "localhost"
+        const val PORT = 3500
+        const val DB_NAME = "nc_server"
+        const val USER = "postgres"
+        const val DB_PASSWORD = "root"
     }
 
     // For heroku deployement
