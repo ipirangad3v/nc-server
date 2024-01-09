@@ -69,5 +69,4 @@ dependencies {
 
     // For sending reset-password-mail
     implementation("org.apache.commons:commons-email:$commonsEmailVersion")
-
 }

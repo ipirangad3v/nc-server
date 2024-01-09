@@ -13,9 +13,9 @@ import digital.thon.nc.application.utils.isValidName
 import digital.thon.nc.data.dao.TokenDao
 import digital.thon.nc.data.dao.UserDao
 import digital.thon.nc.data.model.User
-import java.text.SimpleDateFormat
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.text.SimpleDateFormat
 
 abstract class BaseController : KoinComponent {
     private val userDao by inject<UserDao>()

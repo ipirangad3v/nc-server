@@ -10,8 +10,6 @@ import digital.thon.nc.application.plugins.configureSecurity
 import digital.thon.nc.application.plugins.configureSerialization
 import digital.thon.nc.data.dao.UserDao
 import digital.thon.nc.data.database.DatabaseProviderContract
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
 import io.ktor.server.application.Application
 import org.koin.ktor.ext.inject
 
