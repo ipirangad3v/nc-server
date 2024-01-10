@@ -22,7 +22,7 @@ abstract class BaseController : KoinComponent {
     private val refreshTokensDao by inject<TokenDao>()
     private val passwordEncryption by inject<PasswordEncryptorContract>()
     private val tokenProvider by inject<TokenProvider>()
-    private val simpleDateFormat = SimpleDateFormat("'Date: 'yyyy-MM-dd' Time: 'HH:mm:ss")
+    private val simpleDateFormat = SimpleDateFormat("'Data: 'dd-MM-yyyy' Time: 'HH:mm:ss")
 
     internal fun validateSignInFieldsOrThrowException(signInRequest: SignInRequest) {
         val message =
