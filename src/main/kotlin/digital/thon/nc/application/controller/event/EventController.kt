@@ -1,5 +1,6 @@
 package digital.thon.nc.application.controller.event
 
+import digital.thon.nc.application.controller.BaseController
 import digital.thon.nc.application.model.response.EventResponse
 import digital.thon.nc.application.model.response.EventsResponse
 import digital.thon.nc.application.model.response.GeneralResponse
@@ -8,7 +9,7 @@ import digital.thon.nc.data.dao.EventDao
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DefaultEventController : EventController, KoinComponent {
+class DefaultEventController : BaseController(), EventController, KoinComponent {
     private val eventDao by inject<EventDao>()
 
     override suspend fun getAll(): Response {

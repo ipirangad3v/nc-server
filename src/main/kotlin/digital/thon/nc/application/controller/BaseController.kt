@@ -178,38 +178,6 @@ abstract class BaseController : KoinComponent {
         }
     }
 
-    internal fun validateCreateBlogFields(
-        blogId: Int?,
-        title: String,
-        description: String,
-        creationTime: String,
-    ) {
-        val message =
-            when {
-                blogId == null -> "O ID do blog não pode ser nulo ou vazio"
-                title.count() < 3 -> "O título deve ter no mínimo 3 caracteres"
-                description.count() < 7 -> "A descrição deve ter no mínimo 8 caracteres"
-                creationTime.isBlank() -> "O tempo de criação não pode ser nulo ou vazio"
-                else -> return
-            }
-        throw BadRequestException(message)
-    }
-
-    internal fun validateUpdateBlogFields(
-        blogId: Int?,
-        title: String,
-        description: String,
-    ) {
-        val message =
-            when {
-                blogId == null -> "O ID do blog não pode ser nulo ou vazio"
-                title.length < 3 -> "O título deve ter no mínimo 3 caracteres"
-                description.length < 7 -> "A descrição deve ter no mínimo 8 caracteres"
-                else -> return
-            }
-        throw BadRequestException(message)
-    }
-
     internal suspend fun verifyEmail(email: String) {
         if (!userDao.isEmailAvailable(email)) {
             throw BadRequestException("Falha na autenticação: E-mail já cadastrado")
