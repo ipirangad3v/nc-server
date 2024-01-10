@@ -1,7 +1,7 @@
 package digital.thon.nc.application.router
 
 import digital.thon.nc.application.controller.event.EventController
-import digital.thon.nc.application.model.request.CreateEventRequest
+import digital.thon.nc.application.model.request.event.CreateEventRequest
 import digital.thon.nc.application.model.response.generateHttpResponse
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate

@@ -1,5 +1,7 @@
-package digital.thon.nc.application.model.response
+package digital.thon.nc.application.model.response.event
 
+import digital.thon.nc.application.model.response.Response
+import digital.thon.nc.application.model.response.State
 import kotlinx.serialization.Serializable
 
 @Serializable

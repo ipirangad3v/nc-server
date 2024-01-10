@@ -1,5 +1,7 @@
-package digital.thon.nc.application.model.response
+package digital.thon.nc.application.model.response.auth
 
+import digital.thon.nc.application.model.response.Response
+import digital.thon.nc.application.model.response.State
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,21 +13,10 @@ data class AccountResponse(
     val email: String? = null,
 ) : Response {
     companion object {
-        fun unauthorized(message: String) =
-            AccountResponse(
-                State.UNAUTHORIZED,
-                message,
-            )
 
         fun failed(message: String) =
             AccountResponse(
                 State.FAILED,
-                message,
-            )
-
-        fun notFound(message: String) =
-            AccountResponse(
-                State.NOT_FOUND,
                 message,
             )
 

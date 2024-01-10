@@ -1,12 +1,12 @@
 package digital.thon.nc.application.router
 
 import digital.thon.nc.application.controller.auth.AuthController
-import digital.thon.nc.application.model.request.RefreshTokenRequest
-import digital.thon.nc.application.model.request.ResetPasswordRequest
-import digital.thon.nc.application.model.request.RevokeTokenRequest
-import digital.thon.nc.application.model.request.SignInRequest
-import digital.thon.nc.application.model.request.SignUpRequest
-import digital.thon.nc.application.model.request.UpdatePasswordRequest
+import digital.thon.nc.application.model.request.auth.RefreshTokenRequest
+import digital.thon.nc.application.model.request.auth.ResetPasswordRequest
+import digital.thon.nc.application.model.request.auth.RevokeTokenRequest
+import digital.thon.nc.application.model.request.auth.SignInRequest
+import digital.thon.nc.application.model.request.auth.SignUpRequest
+import digital.thon.nc.application.model.request.auth.UpdatePasswordRequest
 import digital.thon.nc.application.model.response.generateHttpResponse
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate

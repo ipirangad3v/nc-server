@@ -1,8 +1,8 @@
 package digital.thon.nc.application.controller.event
 
 import digital.thon.nc.application.controller.BaseController
-import digital.thon.nc.application.model.response.EventResponse
-import digital.thon.nc.application.model.response.EventsResponse
+import digital.thon.nc.application.model.response.event.EventResponse
+import digital.thon.nc.application.model.response.event.EventsResponse
 import digital.thon.nc.application.model.response.GeneralResponse
 import digital.thon.nc.application.model.response.Response
 import digital.thon.nc.data.dao.EventDao

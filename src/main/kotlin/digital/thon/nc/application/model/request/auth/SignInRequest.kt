@@ -1,4 +1,4 @@
-package digital.thon.nc.application.model.request
+package digital.thon.nc.application.model.request.auth
 
 import kotlinx.serialization.Serializable
 

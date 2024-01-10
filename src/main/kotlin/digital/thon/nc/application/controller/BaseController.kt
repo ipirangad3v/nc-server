@@ -4,10 +4,10 @@ import digital.thon.nc.application.auth.PasswordEncryptorContract
 import digital.thon.nc.application.auth.TokenProvider
 import digital.thon.nc.application.exception.BadRequestException
 import digital.thon.nc.application.exception.UnauthorizedActivityException
-import digital.thon.nc.application.model.request.SignInRequest
-import digital.thon.nc.application.model.request.SignUpRequest
-import digital.thon.nc.application.model.request.UpdatePasswordRequest
-import digital.thon.nc.application.model.response.AuthResponse
+import digital.thon.nc.application.model.request.auth.SignInRequest
+import digital.thon.nc.application.model.request.auth.SignUpRequest
+import digital.thon.nc.application.model.request.auth.UpdatePasswordRequest
+import digital.thon.nc.application.model.response.auth.AuthResponse
 import digital.thon.nc.application.utils.isEmailValid
 import digital.thon.nc.application.utils.isValidName
 import digital.thon.nc.data.dao.TokenDao

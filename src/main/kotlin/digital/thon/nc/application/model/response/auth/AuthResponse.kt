@@ -1,5 +1,7 @@
-package digital.thon.nc.application.model.response
+package digital.thon.nc.application.model.response.auth
 
+import digital.thon.nc.application.model.response.Response
+import digital.thon.nc.application.model.response.State
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
