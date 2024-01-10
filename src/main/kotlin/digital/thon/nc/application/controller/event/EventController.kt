@@ -16,12 +16,12 @@ class DefaultEventController : BaseController(), EventController, KoinComponent 
         return try {
             val events = eventDao.getAll()
             EventsResponse.success(
-                "Successfully retrieved all events",
+                "Eventos recuperados com sucesso",
                 events.map { it.toEventResponse() },
             )
         } catch (e: Exception) {
             EventsResponse.failed(
-                "Failed to retrieve all events",
+                "Falha ao recuperar eventos",
             )
         }
     }
@@ -30,7 +30,7 @@ class DefaultEventController : BaseController(), EventController, KoinComponent 
         return try {
             val event =
                 eventDao.getById(id) ?: return EventResponse.notFound(
-                    "Event with id $id not found",
+                    "Evento com id $id não encontrado",
                 )
             EventResponse.success(
                 id = event.id,
@@ -41,11 +41,11 @@ class DefaultEventController : BaseController(), EventController, KoinComponent 
                 location = event.location,
                 image = event.image,
                 link = event.link,
-                message = "Successfully retrieved event with id $id",
+                message = "Evento com id $id recuperado com sucesso",
             )
         } catch (e: Exception) {
             EventsResponse.failed(
-                "Failed to retrieve event with id $id",
+                "Falha ao recuperar evento com id $id",
             )
         }
     }
@@ -75,7 +75,7 @@ class DefaultEventController : BaseController(), EventController, KoinComponent 
             )
         } catch (e: Exception) {
             EventsResponse.failed(
-                "Failed to create event",
+                "Falha ao criar evento",
             )
         }
     }
@@ -105,17 +105,17 @@ class DefaultEventController : BaseController(), EventController, KoinComponent 
             when (success) {
                 true ->
                     GeneralResponse.success(
-                        "Successfully updated event with id $id",
+                        "Evento com id $id atualizado com sucesso",
                     )
 
                 false ->
                     EventsResponse.failed(
-                        "Failed to update event with id $id",
+                        "Falha ao atualizar evento com id $id",
                     )
             }
         } catch (e: Exception) {
             EventsResponse.failed(
-                "Failed to update event with id $id",
+                "Falha ao atualizar evento com id $id",
             )
         }
     }
@@ -126,17 +126,17 @@ class DefaultEventController : BaseController(), EventController, KoinComponent 
             when (success) {
                 true ->
                     GeneralResponse.success(
-                        "Successfully deleted event with id $id",
+                        "Evento com id $id deletado com sucesso",
                     )
 
                 false ->
                     EventsResponse.failed(
-                        "Failed to delete event with id $id",
+                        "Falha ao deletar evento com id $id",
                     )
             }
         } catch (e: Exception) {
             EventsResponse.failed(
-                "Failed to delete event with id $id",
+                "Falha ao deletar evento com id $id",
             )
         }
     }
