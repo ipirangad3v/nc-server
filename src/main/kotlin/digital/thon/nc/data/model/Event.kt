@@ -1,7 +1,7 @@
 package digital.thon.nc.data.model
 
-import digital.thon.nc.application.model.response.event.EventResponse
 import digital.thon.nc.application.model.response.State
+import digital.thon.nc.application.model.response.event.EventResponse
 import digital.thon.nc.data.entity.EntityEvent
 
 data class Event(

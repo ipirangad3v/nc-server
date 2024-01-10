@@ -13,7 +13,6 @@ data class AccountResponse(
     val email: String? = null,
 ) : Response {
     companion object {
-
         fun failed(message: String) =
             AccountResponse(
                 State.FAILED,

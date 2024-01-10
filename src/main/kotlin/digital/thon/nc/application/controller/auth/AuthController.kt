@@ -13,10 +13,10 @@ import digital.thon.nc.application.model.request.auth.RevokeTokenRequest
 import digital.thon.nc.application.model.request.auth.SignInRequest
 import digital.thon.nc.application.model.request.auth.SignUpRequest
 import digital.thon.nc.application.model.request.auth.UpdatePasswordRequest
-import digital.thon.nc.application.model.response.auth.AccountResponse
-import digital.thon.nc.application.model.response.auth.AuthResponse
 import digital.thon.nc.application.model.response.GeneralResponse
 import digital.thon.nc.application.model.response.Response
+import digital.thon.nc.application.model.response.auth.AccountResponse
+import digital.thon.nc.application.model.response.auth.AuthResponse
 import digital.thon.nc.data.dao.TokenDao
 import digital.thon.nc.data.dao.UserDao
 import io.ktor.http.Parameters

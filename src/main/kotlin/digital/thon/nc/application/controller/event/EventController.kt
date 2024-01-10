@@ -1,10 +1,10 @@
 package digital.thon.nc.application.controller.event
 
 import digital.thon.nc.application.controller.BaseController
-import digital.thon.nc.application.model.response.event.EventResponse
-import digital.thon.nc.application.model.response.event.EventsResponse
 import digital.thon.nc.application.model.response.GeneralResponse
 import digital.thon.nc.application.model.response.Response
+import digital.thon.nc.application.model.response.event.EventResponse
+import digital.thon.nc.application.model.response.event.EventsResponse
 import digital.thon.nc.data.dao.EventDao
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
