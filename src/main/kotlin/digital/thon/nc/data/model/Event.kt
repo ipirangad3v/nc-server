@@ -1,9 +1,7 @@
 package digital.thon.nc.data.model
 
 import digital.thon.nc.data.entity.EntityEvent
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class Event(
     val id: String,
     val name: String,
