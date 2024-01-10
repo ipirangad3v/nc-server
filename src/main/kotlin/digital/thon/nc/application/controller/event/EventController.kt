@@ -16,7 +16,7 @@ class DefaultEventController : EventController, KoinComponent {
             val events = eventDao.getAll()
             EventsResponse.success(
                 "Successfully retrieved all events",
-                events,
+                events.map { it.toEventResponse() },
             )
         } catch (e: Exception) {
             EventsResponse.failed(

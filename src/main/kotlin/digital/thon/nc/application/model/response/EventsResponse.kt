@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class EventsResponse(
     override val status: State,
     override val message: String,
-    val events: List<Event>,
+    val events: List<EventResponse>,
 ) : Response {
     companion object {
         fun failed(message: String) =
@@ -19,7 +19,7 @@ data class EventsResponse(
 
         fun success(
             message: String,
-            events: List<Event>,
+            events: List<EventResponse>,
         ) = EventsResponse(
             State.SUCCESS,
             message,

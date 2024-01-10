@@ -1,5 +1,7 @@
 package digital.thon.nc.data.model
 
+import digital.thon.nc.application.model.response.EventResponse
+import digital.thon.nc.application.model.response.State
 import digital.thon.nc.data.entity.EntityEvent
 
 data class Event(
@@ -12,6 +14,21 @@ data class Event(
     val image: String? = null,
     val link: String? = null,
 ) {
+    fun toEventResponse(): EventResponse {
+        return EventResponse(
+            id = id,
+            name = name,
+            description = description,
+            date = date,
+            time = time,
+            location = location,
+            image = image,
+            link = link,
+            message = "Successfully retrieved event with id $id",
+            status = State.SUCCESS,
+        )
+    }
+
     companion object {
         fun fromEntity(entity: EntityEvent): Event {
             return Event(
