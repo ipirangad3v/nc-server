@@ -1,14 +1,19 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
 val koinVersion: String by project
+val koinKtorVersion: String by project
 val exposedVersion: String by project
 val hikariVersion: String by project
 val postgresVersion: String by project
 val bcryptVersion: String by project
 val commonsEmailVersion: String by project
-val kotestVersion: String by project
 val testContainerVersion: String by project
+val mockkVersion: String by project
+val junitBom: String by project
+
 
 plugins {
     application
@@ -50,8 +55,8 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
 
     // Koin for Kotlin
-    implementation("io.insert-koin:koin-ktor:$koinVersion")
-    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+    implementation("io.insert-koin:koin-ktor:$koinKtorVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinKtorVersion")
 
     // Exposed
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
@@ -69,4 +74,27 @@ dependencies {
 
     // For sending reset-password-mail
     implementation("org.apache.commons:commons-email:$commonsEmailVersion")
+
+
+    testImplementation("io.mockk:mockk:$mockkVersion")
+
+    testImplementation(platform("org.junit:junit-bom:$junitBom"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("io.insert-koin:koin-test:$koinVersion")
+    testImplementation("io.insert-koin:koin-test-junit5:3.5.3")
+}
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(8)
+}
+
+// config JVM target to 1.8 for kotlin compilation tasks
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "1.8"
 }
