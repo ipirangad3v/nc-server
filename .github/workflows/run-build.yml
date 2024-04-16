@@ -1,4 +1,4 @@
-name: Build (API)
+name: Test and Build (API)
 on:
   push
 
@@ -31,6 +31,9 @@ jobs:
 
       - name: Grant Permission to Execute
         run: chmod +x gradlew
+
+      - name: 🧪 Run Tests 🧪
+        run: ./gradlew test --stacktrace
 
       - name: 🏗 Build with Gradle 🛠️
         run: ./gradlew build --stacktrace
